@@ -1,10 +1,5 @@
 namespace :deploy do
 
-  # we often want to refer to variables which
-  # are defined in subsequent stage files. This
-  # let's us use the {{var}} to represent fetch(:var)
-  # in strings which are only evaluated at runtime.
-
   def sub_strings(input_string)
     output_string = input_string
     input_string.scan(/{{(\w*)}}/).each do |var|
@@ -13,19 +8,6 @@ namespace :deploy do
     output_string
   end
 
-
-  # will first try and copy the file:
-  # config/deploy/#{full_app_name}/#{from}.erb
-  # to:
-  # shared/config/to
-  # if the original source path doesn exist then it will
-  # search in:
-  # config/deploy/shared/#{from}.erb
-  # this allows files which are common to all enviros to
-  # come from a single source while allowing specific
-  # ones to be over-ridden
-  # if the target file name is the same as the source then
-  # the second parameter can be left out
   def smart_template(from, to=nil)
     to ||= from
     full_to_path = "#{shared_path}/config/#{to}"
@@ -47,7 +29,7 @@ namespace :deploy do
     return nil
   end
 
-
+  desc 'setup system config'
   task :setup_config do
     on roles(:app) do
       # make the config dir
@@ -75,7 +57,7 @@ namespace :deploy do
       symlinks = fetch(:symlinks)
 
       symlinks.each do |symlink|
-        sudo "ln -nfs #{shared_path}/config/#{symlink[:source]} #{sub_strings(symlink[:link])}"
+        execute "ln -nfs #{shared_path}/config/#{symlink[:source]} #{sub_strings(symlink[:link])}"
       end
     end
   end

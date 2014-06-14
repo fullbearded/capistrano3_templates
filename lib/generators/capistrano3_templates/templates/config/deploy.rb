@@ -30,16 +30,17 @@ set :tests, []
 set(:config_files, %w(
   nginx.conf
   database.example.yml
-  log_rotation
   monit
   unicorn.rb
   unicorn_init.sh
+  nginx
 ))
 
 # which config files should be made executable after copying
 # by deploy:setup_config
 set(:executable_config_files, %w(
   unicorn_init.sh
+  nginx
 ))
 
 
@@ -50,21 +51,18 @@ set(:executable_config_files, %w(
 # tag and then add it at run time.
 set(:symlinks, [
   {
-    source: "nginx.conf",
-    link: "/etc/nginx/sites-enabled/{{full_app_name}}"
-  },
-  {
     source: "unicorn_init.sh",
     link: "/etc/init.d/unicorn_{{full_app_name}}"
   },
   {
-    source: "log_rotation",
-   link: "/etc/logrotate.d/{{full_app_name}}"
-  },
-  {
     source: "monit",
     link: "/etc/monit/conf.d/{{full_app_name}}.conf"
+  },
+  {
+    source: 'nginx',
+    link: "/etc/init.d/nginx"
   }
+
 ])
 
 # this:
@@ -81,16 +79,9 @@ namespace :deploy do
   after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
   after :finishing, 'deploy:cleanup'
 
-  # remove the default nginx configuration as it will tend
-  # to conflict with our configs.
-  before 'deploy:setup_config', 'nginx:remove_default_vhost'
-
   # reload nginx to it will pick up any modified vhosts from
   # setup_config
   after 'deploy:setup_config', 'nginx:reload'
-
-  # Restart monit so it will pick up any monit configurations
-  # we've added
   after 'deploy:setup_config', 'monit:restart'
 
   # As of Capistrano 3.1, the `deploy:restart` task is not called
