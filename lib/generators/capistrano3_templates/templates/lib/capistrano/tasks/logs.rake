@@ -1,4 +1,6 @@
 namespace :logs do
+
+  desc 'get server log file: tail -f your.log | you can get the log info online'
   task :tail, :file do |t, args|
     if args[:file]
       on roles(:app) do
@@ -8,7 +10,8 @@ namespace :logs do
       puts "please specify a logfile e.g: 'rake logs:tail[logfile]"
       puts "will tail 'shared_path/log/logfile.log'"
       puts "remember if you use zsh you'll need to format it as:"
-      puts "rake 'logs:tail[logfile]' (single quotes)"
+      puts "cap your_env 'logs:tail[logfile]' (single quotes)"
     end
   end
+
 end

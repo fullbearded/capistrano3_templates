@@ -1,4 +1,4 @@
-# Capistrano-3-templates
+# Capistrano3 templates
 
 this is the templates gem for capistrano 3, you can use it for your project to deployment! 
 

@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["hdhu@thoughtworks.com"]
   spec.summary       = %q{provide a capistrano 3 basic configuares}
   spec.description   = %q{this is the templates gem for capistrano 3, you can use it for your project to deployment}
-  spec.homepage      = "https://github.com/huhongda/capistrano-3-templates"
+  spec.homepage      = "https://github.com/huhongda/capistrano3_templates"
 
   spec.extra_rdoc_files = ["README.md"]
   spec.rdoc_options     = ["--charset=UTF-8"]
@@ -27,6 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rdoc"
   # spec.add_development_dependency "pry"
-  spec.add_development_dependency "rspec"
 
 end

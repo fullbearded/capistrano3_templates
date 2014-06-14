@@ -8,14 +8,6 @@ rescue LoadError
   puts 'you must `gem install bundler` and `bundle install` to run rake test'
 end
 
-# test
-# require 'rspec'
-# require 'rspec/core/rake_test'
-
-# RSpec::Core::RakeTask.new(:spec)
-
-# task :default => :spec
-
 # Documention
 
 require 'rdoc/task'
