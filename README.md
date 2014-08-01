@@ -8,7 +8,7 @@ base on 'https://github.com/TalkingQuickly/capistrano-3-rails-template.git'
 
 Add this line to your application's Gemfile:
     
-    gem 'capistrano3-templates', git: 'https://github.com/huhongda/capistrano3_templates.git'
+    gem 'capistrano3_templates', git: 'https://github.com/huhongda/capistrano3_templates.git'
 
 And then execute:
 
