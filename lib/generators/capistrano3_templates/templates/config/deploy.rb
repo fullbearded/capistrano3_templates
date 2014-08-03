@@ -6,7 +6,7 @@ set :default_stage, "production"
 
 # setup repo details
 set :scm, :git
-set :repo_url, 'git@github.com:username/repo.git'
+set :repo_url, 'git@github.com:username/repo.git' # this is your repo for your project
 
 # setup rbenv.
 set :rbenv_type, :system
@@ -40,6 +40,9 @@ set(:config_files, %w(
   unicorn_init.sh
   nginx
   memcached.yml
+  mongoid.example.yml
+  sidekiq_init.sh
+  sidekiq.yml
 ))
 
 # which config files should be made executable after copying
@@ -47,6 +50,7 @@ set(:config_files, %w(
 set(:executable_config_files, %w(
   unicorn_init.sh
   nginx
+  sidekiq_init.sh
 ))
 
 
@@ -71,6 +75,10 @@ set(:symlinks, [
   {
     source: 'nginx.conf',
     link: "/usr/local/nginx/conf/conf.d/{{full_app_name}}.conf"
+  },
+  {
+    source: 'sidekiq_init.sh',
+    link: '/etc/init.d/sidekiq'
   }
 ])
 
@@ -100,5 +108,6 @@ namespace :deploy do
   # As of Capistrano 3.1, the `deploy:restart` task is not called
   # automatically.
   after 'deploy:publishing', 'deploy:restart'
+  after 'deploy:restart', 'sidekiq:restart'
 end
 
