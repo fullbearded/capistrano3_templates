@@ -66,7 +66,7 @@ set(:symlinks, [
   },
   {
     source: "monit",
-    link: "/etc/monit/conf.d/{{full_app_name}}.conf"
+    link: "/etc/monit.d/{{full_app_name}}.conf"
   },
   {
     source: 'nginx',
