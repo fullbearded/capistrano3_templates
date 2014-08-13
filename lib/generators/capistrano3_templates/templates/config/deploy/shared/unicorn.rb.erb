@@ -9,6 +9,10 @@ worker_processes <%= fetch(:unicorn_worker_count) %>
 timeout 40
 preload_app true
 
+# To save some memory and improve performance
+GC.respond_to?(:copy_on_write_friendly=) and
+  GC.copy_on_write_friendly = true
+
 # Force unicorn to look at the Gemfile in the current_path
 # otherwise once we've first started a master process, it
 # will always point to the first one it started.
@@ -33,6 +37,8 @@ before_fork do |server, worker|
 end
 
 after_fork do |server, worker|
+  # 禁止GC，配合后续的OOB，来减少请求的执行时间
+  GC.disable
   port = 5000 + worker.nr
   child_pid = server.config[:pid].sub('.pid', ".#{port}.pid")
   system("echo #{Process.pid} > #{child_pid}")
